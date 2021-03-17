@@ -1,60 +1,89 @@
 package com.yogenp.loginmvvm.ui.auth
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.yogenp.loginmvvm.R
+import com.yogenp.loginmvvm.data.network.AuthApi
+import com.yogenp.loginmvvm.data.network.Resource
+import com.yogenp.loginmvvm.data.repository.AuthRepository
+import com.yogenp.loginmvvm.databinding.FragmentRegisterBinding
+import com.yogenp.loginmvvm.ui.base.BaseFragment
+import com.yogenp.loginmvvm.ui.enable
+import com.yogenp.loginmvvm.ui.handleApiError
+import com.yogenp.loginmvvm.ui.home.HomeActivity
+import com.yogenp.loginmvvm.ui.startNewActivity
+import com.yogenp.loginmvvm.ui.visible
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RegisterFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class RegisterFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class RegisterFragment : BaseFragment<AuthViewModel, FragmentRegisterBinding, AuthRepository>()  {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        binding.progressBar.visible(false)
+        binding.btnRegister.enable(false)
+
+        viewModel.registerResponse.observe(viewLifecycleOwner, {
+            binding.progressBar.visible(it is Resource.Loading)
+            when (it) {
+                is Resource.Success -> {
+                    lifecycleScope.launch {
+                        viewModel.saveAuthToken(it.value.user.access_token!!)
+                        requireActivity().startNewActivity(HomeActivity::class.java)
+                    }
+                }
+                is Resource.Failure -> handleApiError(it) { registerUser() }
+                else -> Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        binding.btnGoToLogin.setOnClickListener {
+//            parentFragmentManager.beginTransaction().replace(R.id.fragment, LoginFragment())
+            findNavController().navigate(R.id.loginFragment)
+        }
+
+        binding.edtRegPassword.addTextChangedListener {
+            val name = binding.edtRegName.text.toString().trim()
+            val email = binding.edtRegEmail.text.toString().trim()
+            binding.btnRegister.enable(name.isNotEmpty() && email.isNotEmpty() && it.toString().isNotEmpty())
+        }
+
+        binding.btnRegister.setOnClickListener {
+            registerUser()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false)
+//    override fun onCreateView(
+//        inflater: LayoutInflater, container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//
+//        val v = inflater.inflate(R.layout.fragment_register, container, false)
+//
+//        return v
+//
+//    }
+
+    private fun registerUser(){
+        val name = binding.edtRegName.text.toString().trim()
+        val email = binding.edtRegEmail.text.toString().trim()
+        val password = binding.edtRegPassword.text.toString().trim()
+        viewModel.registerUser(name, email, password)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RegisterFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RegisterFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+    override fun getViewModel() = AuthViewModel::class.java
+
+    override fun getFragmentBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentRegisterBinding.inflate(inflater, container, false)
+
+    override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java), userPreferences)
+
 }

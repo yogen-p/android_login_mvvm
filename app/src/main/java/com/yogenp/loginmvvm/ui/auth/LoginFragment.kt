@@ -1,11 +1,13 @@
 package com.yogenp.loginmvvm.ui.auth
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.yogenp.loginmvvm.R
 import com.yogenp.loginmvvm.data.network.AuthApi
 import com.yogenp.loginmvvm.data.network.Resource
 import com.yogenp.loginmvvm.data.repository.AuthRepository
@@ -36,6 +38,7 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
                     }
                 }
                 is Resource.Failure -> handleApiError(it) { login() }
+                else -> Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -47,9 +50,15 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         binding.btnLogin.setOnClickListener {
             login()
         }
+
+        binding.btnGoToRegister.setOnClickListener {
+//            parentFragmentManager.beginTransaction().replace(R.id.fragment, RegisterFragment())
+            findNavController().navigate(R.id.registerFragment)
+        }
+
     }
 
-    private fun login(){
+    private fun login() {
         val email = binding.edtEmail.text.toString().trim()
         val password = binding.edtPassword.text.toString().trim()
         viewModel.login(email, password)

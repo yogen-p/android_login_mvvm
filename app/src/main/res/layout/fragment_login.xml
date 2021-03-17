@@ -50,6 +50,16 @@
         android:layout_marginTop="15dp"
         android:text="@string/login"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGoToRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:text="@string/new_user_sign_up"
+        android:textColor="@color/purple_200"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"/>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"

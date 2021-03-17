@@ -10,12 +10,17 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "my_data_store")
+
 class UserPreferences(
     context: Context
 ) {
 
     private val applicationContext = context.applicationContext
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "my_data_store")
+
+    companion object {
+        private val KEY_AUTH = stringPreferencesKey("key_auth")
+    }
 
     val authToken: Flow<String?>
         get() = applicationContext.dataStore.data.map {
@@ -32,10 +37,6 @@ class UserPreferences(
         applicationContext.dataStore.edit {
             it.clear()
         }
-    }
-
-    companion object {
-        private val KEY_AUTH = stringPreferencesKey("key_auth")
     }
 
 }
