@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.yogenp.loginmvvm.data.network.Resource
 import com.yogenp.loginmvvm.ui.auth.LoginFragment
+import com.yogenp.loginmvvm.ui.base.BaseFragment
 
 fun<A : Activity> Activity.startNewActivity(activity: Class<A>){
     Intent(this, activity).also {
@@ -47,7 +48,7 @@ fun Fragment.handleApiError(
             if (this is LoginFragment){
                 requireView().snackBar("Incorrect credentials")
             } else {
-                TODO("Logout op")
+                (this as BaseFragment<*, *, *>).logout()
             }
         }
         else -> {

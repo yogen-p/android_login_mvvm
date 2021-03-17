@@ -27,7 +27,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding, UserReposi
         binding.progressBar.visible(false)
 
         viewModel.getUser()
-        viewModel.user.observe(viewLifecycleOwner, Observer {
+        viewModel.user.observe(viewLifecycleOwner, {
             when (it) {
                 is Resource.Success -> {
                     binding.progressBar.visible(false)
@@ -41,6 +41,10 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding, UserReposi
                 }
             }
         })
+
+        binding.btnLogout.setOnClickListener {
+            logout()
+        }
     }
 
     private fun updateUI(user: User){

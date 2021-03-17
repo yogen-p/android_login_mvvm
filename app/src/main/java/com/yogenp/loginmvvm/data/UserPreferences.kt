@@ -2,6 +2,7 @@ package com.yogenp.loginmvvm.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -24,6 +25,12 @@ class UserPreferences(
     suspend fun saveAuthToken(authToken: String) {
         applicationContext.dataStore.edit {
             it[KEY_AUTH] = authToken
+        }
+    }
+
+    suspend fun clear(){
+        applicationContext.dataStore.edit {
+            it.clear()
         }
     }
 

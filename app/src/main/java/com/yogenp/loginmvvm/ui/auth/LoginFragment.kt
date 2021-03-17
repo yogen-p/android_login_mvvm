@@ -1,6 +1,7 @@
 package com.yogenp.loginmvvm.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
@@ -34,7 +35,7 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
                         requireActivity().startNewActivity(HomeActivity::class.java)
                     }
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Failure -> handleApiError(it) { login() }
             }
         })
 
@@ -44,11 +45,14 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         }
 
         binding.btnLogin.setOnClickListener {
-            val email = binding.edtEmail.text.toString().trim()
-            val password = binding.edtPassword.text.toString().trim()
-
-            viewModel.login(email, password)
+            login()
         }
+    }
+
+    private fun login(){
+        val email = binding.edtEmail.text.toString().trim()
+        val password = binding.edtPassword.text.toString().trim()
+        viewModel.login(email, password)
     }
 
     override fun getViewModel() = AuthViewModel::class.java

@@ -1,6 +1,7 @@
 package com.yogenp.loginmvvm.data.repository
 
 import com.yogenp.loginmvvm.data.network.Resource
+import com.yogenp.loginmvvm.data.network.UserApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -24,5 +25,9 @@ abstract class BaseRepository {
                 }
             }
         }
+    }
+
+    suspend fun logout(api: UserApi) = withContext(Dispatchers.IO) {
+        api.logout()
     }
 }

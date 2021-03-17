@@ -11,11 +11,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.yogenp.loginmvvm.data.UserPreferences
 import com.yogenp.loginmvvm.data.network.RemoteDataSource
+import com.yogenp.loginmvvm.data.network.UserApi
 import com.yogenp.loginmvvm.data.repository.BaseRepository
+import com.yogenp.loginmvvm.ui.auth.AuthActivity
+import com.yogenp.loginmvvm.ui.startNewActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-abstract class BaseFragment<VM: ViewModel, B: ViewBinding, R: BaseRepository> : Fragment() {
+abstract class BaseFragment<VM: BaseViewModel, B: ViewBinding, R: BaseRepository> : Fragment() {
 
     protected lateinit var binding: B
     protected lateinit var viewModel: VM
@@ -36,6 +39,14 @@ abstract class BaseFragment<VM: ViewModel, B: ViewBinding, R: BaseRepository> : 
         lifecycleScope.launch { userPreferences.authToken.first() }
 
         return binding.root
+    }
+
+    fun logout() = lifecycleScope.launch {
+        val authToken = userPreferences.authToken.first()
+        val api = remoteDataSource.buildApi(UserApi::class.java, authToken)
+        viewModel.logout(api)
+        userPreferences.clear()
+        requireActivity().startNewActivity(AuthActivity::class.java)
     }
 
     abstract fun getViewModel(): Class<VM>
