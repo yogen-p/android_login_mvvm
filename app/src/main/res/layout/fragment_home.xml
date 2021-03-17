@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
+
+    <TableLayout
+        android:id="@+id/table"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="12dp"
+        android:stretchColumns="*">
+
+        <TableRow>
+
+            <TextView
+                android:text="ID" />
+
+            <TextView
+                android:id="@+id/txtId"
+                tools:text="1" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:text="Name" />
+
+            <TextView
+                android:id="@+id/txtName"
+                tools:text="Yogen P" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:text="Email" />
+
+            <TextView
+                android:id="@+id/txtEmail"
+                tools:text="yogenparekh039@gmail.com" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/table"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:text="Logout" />
+
+    <ProgressBar
+        android:layout_centerInParent="true"
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
