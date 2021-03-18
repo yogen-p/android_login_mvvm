@@ -1,10 +1,9 @@
 package com.yogenp.loginmvvm.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,16 +12,16 @@ import com.yogenp.loginmvvm.data.network.AuthApi
 import com.yogenp.loginmvvm.data.network.Resource
 import com.yogenp.loginmvvm.data.repository.AuthRepository
 import com.yogenp.loginmvvm.databinding.FragmentRegisterBinding
+import com.yogenp.loginmvvm.ui.*
 import com.yogenp.loginmvvm.ui.base.BaseFragment
-import com.yogenp.loginmvvm.ui.enable
-import com.yogenp.loginmvvm.ui.handleApiError
 import com.yogenp.loginmvvm.ui.home.HomeActivity
-import com.yogenp.loginmvvm.ui.startNewActivity
-import com.yogenp.loginmvvm.ui.visible
 import kotlinx.coroutines.launch
 
+class RegisterFragment : BaseFragment<AuthViewModel, FragmentRegisterBinding, AuthRepository>() {
 
-class RegisterFragment : BaseFragment<AuthViewModel, FragmentRegisterBinding, AuthRepository>()  {
+    var name = ""
+    var email = ""
+    var password = ""
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -39,19 +38,24 @@ class RegisterFragment : BaseFragment<AuthViewModel, FragmentRegisterBinding, Au
                     }
                 }
                 is Resource.Failure -> handleApiError(it) { registerUser() }
-                else -> Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+                else -> Log.e("Register User", it.toString())
             }
         })
 
         binding.btnGoToLogin.setOnClickListener {
-//            parentFragmentManager.beginTransaction().replace(R.id.fragment, LoginFragment())
             findNavController().navigate(R.id.loginFragment)
         }
 
-        binding.edtRegPassword.addTextChangedListener {
-            val name = binding.edtRegName.text.toString().trim()
-            val email = binding.edtRegEmail.text.toString().trim()
-            binding.btnRegister.enable(name.isNotEmpty() && email.isNotEmpty() && it.toString().isNotEmpty())
+        binding.edtRegPasswordConfirmation.addTextChangedListener {
+            name = binding.edtRegName.text.toString().trim()
+            email = binding.edtRegEmail.text.toString().trim()
+            password = binding.edtRegPassword.text.toString().trim()
+            binding.btnRegister.enable(
+                name.isNotEmpty() &&
+                        email.isNotEmpty() &&
+                        password.isNotEmpty() &&
+                        it.toString().isNotEmpty()
+            )
         }
 
         binding.btnRegister.setOnClickListener {
@@ -59,22 +63,13 @@ class RegisterFragment : BaseFragment<AuthViewModel, FragmentRegisterBinding, Au
         }
     }
 
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//
-//        val v = inflater.inflate(R.layout.fragment_register, container, false)
-//
-//        return v
-//
-//    }
-
-    private fun registerUser(){
-        val name = binding.edtRegName.text.toString().trim()
-        val email = binding.edtRegEmail.text.toString().trim()
-        val password = binding.edtRegPassword.text.toString().trim()
-        viewModel.registerUser(name, email, password)
+    private fun registerUser() {
+        val passwordConfirmation = binding.edtRegPasswordConfirmation.text.toString().trim()
+        if (password == passwordConfirmation){
+            viewModel.registerUser(name, email, password, passwordConfirmation)
+        } else {
+            requireView().snackBar("Passwords don't match!!!")
+        }
     }
 
     override fun getViewModel() = AuthViewModel::class.java
@@ -84,6 +79,7 @@ class RegisterFragment : BaseFragment<AuthViewModel, FragmentRegisterBinding, Au
         container: ViewGroup?
     ) = FragmentRegisterBinding.inflate(inflater, container, false)
 
-    override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java), userPreferences)
+    override fun getFragmentRepository() =
+        AuthRepository(remoteDataSource.buildApi(AuthApi::class.java), userPreferences)
 
 }

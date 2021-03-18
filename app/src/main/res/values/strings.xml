@@ -9,4 +9,5 @@
     <string name="register">Register</string>
     <string name="already_have_an_account">Already have an account? Login here.</string>
     <string name="new_user_sign_up">New USer? Sign up</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

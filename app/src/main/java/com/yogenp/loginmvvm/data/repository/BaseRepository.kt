@@ -1,5 +1,6 @@
 package com.yogenp.loginmvvm.data.repository
 
+import android.util.Log
 import com.yogenp.loginmvvm.data.network.Resource
 import com.yogenp.loginmvvm.data.network.UserApi
 import kotlinx.coroutines.Dispatchers
@@ -13,8 +14,9 @@ abstract class BaseRepository {
     ): Resource<T>{
         return withContext(Dispatchers.IO){
             try {
+                Log.e("Attempt Login", "BaseRepo")
                 Resource.Success(apiCall.invoke())
-            }catch (throwable: Throwable){
+            } catch (throwable: Throwable){
                 when(throwable){
                     is HttpException -> {
                         Resource.Failure(false, throwable.code(), throwable.response()?.errorBody())

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:textSize="20sp"
-            android:padding="10dp"
+            android:paddingTop="25dp"
             android:backgroundTint="@color/white"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -39,7 +39,7 @@
             android:inputType="textPassword"
             android:textSize="20sp"
             android:backgroundTint="@color/white"
-            android:padding="10dp"/>
+            android:paddingTop="25dp"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

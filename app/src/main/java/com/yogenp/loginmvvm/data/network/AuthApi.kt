@@ -12,7 +12,7 @@ interface AuthApi {
     @POST("auth/login")
     suspend fun login(
         @Field("email") email: String,
-        @Field("password")password: String
+        @Field("password") password: String
     ): LoginResponse
 
     @FormUrlEncoded
@@ -20,6 +20,7 @@ interface AuthApi {
     suspend fun register(
         @Field("name") name: String,
         @Field("email") email: String,
-        @Field("password")password: String
+        @Field("password") password: String,
+        @Field("password_confirmation") passwordConfirmation: String
     ): RegisterResponse
 }

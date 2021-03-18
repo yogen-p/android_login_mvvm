@@ -1,13 +1,10 @@
 package com.yogenp.loginmvvm.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.Observer
-import com.yogenp.loginmvvm.R
 import com.yogenp.loginmvvm.data.network.Resource
 import com.yogenp.loginmvvm.data.network.UserApi
 import com.yogenp.loginmvvm.data.repository.UserRepository
@@ -47,7 +44,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding, UserReposi
         }
     }
 
-    private fun updateUI(user: User){
+    private fun updateUI(user: User) {
         with(binding) {
             txtId.text = user.id.toString()
             txtName.text = user.name

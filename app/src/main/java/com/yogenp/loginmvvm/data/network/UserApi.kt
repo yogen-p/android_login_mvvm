@@ -7,7 +7,7 @@ import retrofit2.http.POST
 
 interface UserApi {
 
-    @GET("user")
+    @GET("index")
     suspend fun getUser(): LoginResponse
 
     @POST("logout")

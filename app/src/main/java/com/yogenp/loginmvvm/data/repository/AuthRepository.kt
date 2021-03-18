@@ -6,7 +6,7 @@ import com.yogenp.loginmvvm.data.network.AuthApi
 class AuthRepository(
     private val api: AuthApi,
     private val preferences: UserPreferences
-) : BaseRepository(){
+) : BaseRepository() {
 
     suspend fun login(
         email: String,
@@ -18,12 +18,13 @@ class AuthRepository(
     suspend fun register(
         name: String,
         email: String,
-        password: String
+        password: String,
+        passwordConfirmation: String
     ) = safeApiCall {
-        api.register(name, email, password)
+        api.register(name, email, password, passwordConfirmation)
     }
 
-    suspend fun saveAuthToken(token: String){
+    suspend fun saveAuthToken(token: String) {
         preferences.saveAuthToken(token)
     }
 }

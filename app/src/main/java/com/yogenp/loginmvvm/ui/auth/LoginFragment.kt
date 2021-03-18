@@ -1,9 +1,9 @@
 package com.yogenp.loginmvvm.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -38,7 +38,7 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
                     }
                 }
                 is Resource.Failure -> handleApiError(it) { login() }
-                else -> Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+                else -> Log.e("Login Attempt", it.toString())
             }
         })
 
@@ -59,6 +59,7 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
     }
 
     private fun login() {
+        Log.e("Attempt Login", "btnLogin")
         val email = binding.edtEmail.text.toString().trim()
         val password = binding.edtPassword.text.toString().trim()
         viewModel.login(email, password)

@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.auth.LoginFragment"
+    android:layout_marginTop="150sp"
     android:orientation="vertical"
     android:padding="20sp"
-    android:layout_marginTop="150sp">
+    tools:context=".ui.auth.LoginFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilName"
@@ -18,10 +18,10 @@
             android:id="@+id/edtRegName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:inputType="textEmailAddress"
-            android:textSize="20sp"
-            android:padding="10dp"
-            android:backgroundTint="@color/white"/>
+            android:paddingTop="25dp"
+            android:textSize="20sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -29,17 +29,17 @@
         android:id="@+id/tilEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_email"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="15dp"
+        android:hint="@string/enter_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtRegEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:inputType="textEmailAddress"
-            android:textSize="20sp"
-            android:padding="10dp"
-            android:backgroundTint="@color/white"/>
+            android:paddingTop="25dp"
+            android:textSize="20sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,17 +47,35 @@
         android:id="@+id/tilPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_password"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="15dp"
+        android:hint="@string/enter_password">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtRegPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:textSize="20sp"
             android:backgroundTint="@color/white"
-            android:padding="10dp"/>
+            android:inputType="textPassword"
+            android:paddingTop="25dp"
+            android:textSize="20sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPasswordConfirmation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="@string/confirm_password">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtRegPasswordConfirmation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:inputType="textPassword"
+            android:paddingTop="25dp"
+            android:textSize="20sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,22 +84,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="@string/register"/>
+        android:text="@string/register" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGoToLogin"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_gravity="center_horizontal"
         android:text="@string/already_have_an_account"
         android:textColor="@color/purple_200"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"/>
+        android:textStyle="bold" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
 </LinearLayout>
